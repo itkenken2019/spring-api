@@ -1,0 +1,27 @@
+name: Manual Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build Jar
+        run: mvn clean package -DskipTests
+
+      - name: Build Docker Image
+        run: docker build -t spring-api .
+
+      - name: Release Success
+        run: echo "READY FOR CLOUD RUN DEPLOY"
